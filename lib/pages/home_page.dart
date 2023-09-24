@@ -1,3 +1,4 @@
+import 'package:flashcard_app/animation/fadein_animation.dart';
 import 'package:flashcard_app/data/words.dart';
 import 'package:flashcard_app/utils/constants.dart';
 import 'package:flashcard_app/widgets/topic_tile.dart';
@@ -44,10 +45,12 @@ class _HomePageState extends State<HomePage> {
               color: whiteColor,
               size: 32,
             ),
-            Text(
-              "Flash Card\n我国学习卡",
-              textAlign: TextAlign.center,
-              style: appTheme.appBarTheme.titleTextStyle,
+            FadeInAnimation(
+              child: Text(
+                "Flash Card\n我国学习卡",
+                textAlign: TextAlign.center,
+                style: appTheme.appBarTheme.titleTextStyle,
+              ),
             ),
             const Icon(
               Icons.settings_outlined,
@@ -67,7 +70,8 @@ class _HomePageState extends State<HomePage> {
               flexibleSpace: FlexibleSpaceBar(
                 background: Padding(
                   padding: EdgeInsets.all(dSize.width * 0.09),
-                  child: Image.asset("assets/images/dragon.png"),
+                  child: FadeInAnimation(
+                      child: Image.asset("assets/images/dragon.png")),
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:flashcard_app/animation/slide_animation.dart';
 import 'package:flashcard_app/controller/flashcard_notifier.dart';
 import 'package:flashcard_app/utils/constants.dart';
 import 'package:flashcard_app/widgets/common_appbar.dart';
@@ -19,15 +20,18 @@ class _FlashCardPageState extends State<FlashCardPage> {
     return Consumer<FlashCardNotifier>(builder: (_, notifier, __) {
       return Scaffold(
         appBar: const CommonAppBar(),
-        body: Center(
-          child: Container(
-            width: dSize.width * 0.9,
-            height: dSize.height * 0.8,
-            decoration: const BoxDecoration(
-                color: skyBlueColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30))),
+        body: SlideAnimation(
+          slideDirection: SlideDirection.topRightIn,
+          child: Center(
+            child: Container(
+              width: dSize.width * 0.9,
+              height: dSize.height * 0.8,
+              decoration: const BoxDecoration(
+                  color: skyBlueColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
+            ),
           ),
         ),
       );

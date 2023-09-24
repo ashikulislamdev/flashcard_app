@@ -1,3 +1,4 @@
+import 'package:flashcard_app/animation/fadein_animation.dart';
 import 'package:flashcard_app/controller/flashcard_notifier.dart';
 import 'package:flashcard_app/pages/home_page.dart';
 import 'package:flashcard_app/utils/constants.dart';
@@ -11,25 +12,29 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FlashCardNotifier>(builder: (_, notifier, __) {
-      return AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Hero(
+    return Consumer<FlashCardNotifier>(
+      builder: (_, notifier, __) {
+        return AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Hero(
               tag: notifier.topic,
               child: const Icon(
                 Icons.topic_outlined,
                 size: 30,
                 color: whiteColor,
-              )),
-        ),
-        title: Text(
-          notifier.topic,
-          style:
-              appTheme.appBarTheme.titleTextStyle!.copyWith(color: whiteColor),
-        ),
-        actions: [
-          IconButton(
+              ),
+            ),
+          ),
+          title: FadeInAnimation(
+            child: Text(
+              notifier.topic,
+              style: appTheme.appBarTheme.titleTextStyle!
+                  .copyWith(color: whiteColor),
+            ),
+          ),
+          actions: [
+            IconButton(
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
@@ -41,10 +46,12 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Icons.close,
                 size: 30,
                 color: whiteColor,
-              ))
-        ],
-      );
-    });
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
