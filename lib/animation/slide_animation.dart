@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 enum SlideDirection {
   none,
+  rightWay,
+  leftWay,
   rightIn,
   leftIn,
   upIn,
@@ -17,10 +19,14 @@ class SlideAnimation extends StatefulWidget {
       {super.key,
       required this.child,
       required this.slideDirection,
-      this.isAnimate = true});
+      this.isAnimate = true,
+      this.isReset,
+      this.isAnimationCompleted});
   final Widget child;
   final SlideDirection slideDirection;
   final bool isAnimate;
+  final bool? isReset;
+  final VoidCallback? isAnimationCompleted;
 
   @override
   State<SlideAnimation> createState() => _SlideAnimationState();
@@ -33,7 +39,12 @@ class _SlideAnimationState extends State<SlideAnimation>
   @override
   void initState() {
     animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
+        vsync: this, duration: const Duration(milliseconds: 800))
+      ..addListener(() {
+        if (animationController.isCompleted) {
+          widget.isAnimationCompleted?.call();
+        }
+      });
 
     if (widget.isAnimate) {
       animationController.forward();
@@ -44,6 +55,9 @@ class _SlideAnimationState extends State<SlideAnimation>
 
   @override
   void didUpdateWidget(covariant SlideAnimation oldWidget) {
+    if (widget.isReset == true) {
+      animationController.reset();
+    }
     if (widget.isAnimate) {
       animationController.forward();
     }
@@ -62,6 +76,12 @@ class _SlideAnimationState extends State<SlideAnimation>
     Tween<Offset> tween;
 
     switch (widget.slideDirection) {
+      case SlideDirection.rightWay:
+        tween = Tween(begin: const Offset(0, 0), end: const Offset(-1, 0));
+        break;
+      case SlideDirection.leftWay:
+        tween = Tween(begin: const Offset(0, 0), end: const Offset(1, 0));
+        break;
       case SlideDirection.rightIn:
         tween = Tween(begin: const Offset(1, 0), end: const Offset(0, 0));
         break;

@@ -15,24 +15,48 @@ class FlashCard2 extends StatelessWidget {
     final dSize = MediaQuery.of(context).size;
     return Consumer<FlashCardNotifier>(
       builder: (_, notifier, __) {
-        return HalfFlipAnimation(
-          isAnimate: notifier.flipCard2,
-          isReset: false,
-          isFlipFromHalfWay: true,
-          isAnimationCompleted: () {
-            print('card 2');
+        return GestureDetector(
+          onHorizontalDragEnd: (dragDetails) {
+            // print(dragDetails.primaryVelocity);
+            if (dragDetails.primaryVelocity! > 100) {
+              notifier.runSwipeCard2(direction: SlideDirection.rightWay);
+              notifier.runSlideCard1();
+              notifier.setIgnoreTouch(ignore: true);
+            }
+            if (dragDetails.primaryVelocity! < 100) {
+              // print('Swiped left');
+              notifier.runSwipeCard2(direction: SlideDirection.leftWay);
+              notifier.runSlideCard1(); //
+              notifier.setIgnoreTouch(ignore: true);
+            }
           },
-          child: SlideAnimation(
-            slideDirection: SlideDirection.topRightIn,
-            child: Center(
-              child: Container(
-                width: dSize.width * 0.9,
-                height: dSize.height * 0.8,
-                decoration: const BoxDecoration(
-                    color: skyBlueColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30))),
+          child: HalfFlipAnimation(
+            isAnimate: notifier.flipCard2,
+            isReset: notifier.isResetFlipCard2,
+            isFlipFromHalfWay: true,
+            isAnimationCompleted: () {
+              notifier.setIgnoreTouch(
+                  ignore:
+                      false); //after completing the animation user can touch again
+            },
+            child: SlideAnimation(
+              isReset: notifier.isResetSwipeCard2,
+              isAnimationCompleted: () {
+                notifier.resetCard2();
+              },
+              isAnimate: notifier
+                  .swipeCard2, //apply the acutal animation when we should slideCard1 on the center of the screen
+              slideDirection: notifier.swipeDirection,
+              child: Center(
+                child: Container(
+                  width: dSize.width * 0.9,
+                  height: dSize.height * 0.8,
+                  decoration: const BoxDecoration(
+                      color: skyBlueColor,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                ),
               ),
             ),
           ),

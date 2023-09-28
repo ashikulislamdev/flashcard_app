@@ -18,15 +18,26 @@ class FlashCard1 extends StatelessWidget {
         return GestureDetector(
           onDoubleTap: () {
             notifier.runFlipCard1();
+            notifier.setIgnoreTouch(
+                ignore:
+                    true); //while the card is fliping around we want to prevent touches
           },
           child: HalfFlipAnimation(
             isAnimate: notifier.flipCard1,
-            isReset: false,
+            isReset: notifier.isResetFlipCard1,
             isFlipFromHalfWay: false,
             isAnimationCompleted: () {
+              notifier.resetCard1();
               notifier.runFlipCard2();
             },
             child: SlideAnimation(
+              isAnimationCompleted: () {
+                notifier.setIgnoreTouch(
+                    ignore:
+                        false); // this is after card 1 has animated from the bottom to the center
+              },
+              isReset: notifier.isResetSlideCard1,
+              isAnimate: notifier.slideCard1,
               slideDirection: SlideDirection.topRightIn,
               child: Center(
                 child: Container(

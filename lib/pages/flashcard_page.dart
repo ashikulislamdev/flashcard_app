@@ -14,15 +14,29 @@ class FlashCardPage extends StatefulWidget {
 
 class _FlashCardPageState extends State<FlashCardPage> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //call the runSlideCard1 method when the session start
+      Provider.of<FlashCardNotifier>(context, listen: false).runSlideCard1();
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<FlashCardNotifier>(builder: (_, notifier, __) {
-      return const Scaffold(
-        appBar: CommonAppBar(),
-        body: Stack(
-          children: [
-            FlashCard1(),
-            FlashCard2(),
-          ],
+      return Scaffold(
+        appBar: const CommonAppBar(),
+        body: IgnorePointer(
+          //to prevent unneccessary touch
+          ignoring: notifier.ignoreTouch,
+          child: const Stack(
+            children: [
+              FlashCard1(),
+              FlashCard2(),
+            ],
+          ),
         ),
       );
     });
