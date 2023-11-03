@@ -22,12 +22,14 @@ class FlashCard2 extends StatelessWidget {
               notifier.runSwipeCard2(direction: SlideDirection.rightWay);
               notifier.runSlideCard1();
               notifier.setIgnoreTouch(ignore: true);
+              notifier.generateCurrentWord();
             }
             if (dragDetails.primaryVelocity! < 100) {
               // print('Swiped left');
               notifier.runSwipeCard2(direction: SlideDirection.leftWay);
               notifier.runSlideCard1(); //
               notifier.setIgnoreTouch(ignore: true);
+              notifier.generateCurrentWord();
             }
           },
           child: HalfFlipAnimation(
@@ -56,6 +58,7 @@ class FlashCard2 extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30))),
+                  child: Text(notifier.wordModel.character),
                 ),
               ),
             ),

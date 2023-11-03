@@ -1,14 +1,33 @@
+import 'dart:math';
+
 import 'package:flashcard_app/animation/slide_animation.dart';
+import 'package:flashcard_app/data/words.dart';
+import 'package:flashcard_app/models/word_model.dart';
 import 'package:flutter/material.dart';
 
 class FlashCardNotifier extends ChangeNotifier {
   String topic = '';
+  WordModel wordModel =
+      WordModel(topic: '', english: '', character: '', pinyin: '');
+  List<WordModel> selectedWord = [];
 
   setTopic({required String topic}) {
     this.topic = topic;
     notifyListeners();
   }
 
+  generateAllSelectedWord() {
+    selectedWord.clear();
+    selectedWord = words.where((element) => element.topic == topic).toList();
+  }
+
+  generateCurrentWord() {
+    final r = Random().nextInt(selectedWord.length);
+    wordModel = selectedWord[r];
+    selectedWord.removeAt(r);
+  }
+
+  //Animation notifier
   bool ignoreTouch = true;
 
   setIgnoreTouch({required bool ignore}) {

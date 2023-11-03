@@ -48,6 +48,7 @@ class FlashCard1 extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30))),
+                  child: Text(notifier.wordModel.english),
                 ),
               ),
             ),
